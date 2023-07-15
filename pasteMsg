@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Sleep for a short period to allow time to switch to the desired window or field
+sleep 0.5
+msg="Hello world\nMy name is Marni"
+# Copy the desired text to the clipboard using xclip
+echo -e "$msg" | xclip -selection clipboard
+
+# Simulate typing the clipboard contents using xdotool
+xdotool type --clearmodifiers "$(xclip -o -selection clipboard)"
+
