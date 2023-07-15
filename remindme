@@ -13,11 +13,12 @@ fi
 
 if [ $# -eq 0 ] ; then
   # Display the whole rememberfile when not given any search criteria.
+  #
   vim $rememberfile
 else
   # Otherwise, search through the file for the given terms, and display
   # the results neatly
-  grep -i -- "$@" $rememberfile | ${PAGER:-more}
+  grep -i -- "$@" $rememberfile | ${PAGER:-less}
 fi
 
 exit 0
