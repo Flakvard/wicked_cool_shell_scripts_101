@@ -1,3 +1,3 @@
 echo "Hello world"
-echo $($which echo)
-cat $(which echo)
+echo $(which neqn)
+cat $(which neqn)
