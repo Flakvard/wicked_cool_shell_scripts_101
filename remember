@@ -1,18 +1,19 @@
 #!/bin/bash
-# remember -- An easy command line-based reminder pad
+
+# remember--An easy command line-based reminder pad
 
 rememberfile="$HOME/.remember"
 
-if [ $# -eq 0 ] ; then
-    # Promp the user for input and append
-    # whatever they write to the rememberfile
-    echo "Enter note, end with ';': "
-    cat - >> $rememberfile
-    
+if [ $# -eq 0 ] ; then
+  # Promp the user for input and append
+  # whatever they write to the rememberfile
+  echo "Enter note, end with 'CTRL+D': "
+  cat - >> $rememberfile
 else
-    # Append any arguments passed to the
-    # script on the .remember file.
-    echo "$@" >> $rememberfile
+  # Append any arguments passed to the
+  # script on the .remember file.
+  echo "$@" >> $rememberfile
 fi
 
 exit 0
+
