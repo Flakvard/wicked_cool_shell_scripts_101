@@ -6,7 +6,7 @@
 monthNumToName()
 {
 # Sets the 'month' variable to the appropriate value.
-  case $2 in
+  case $1 in
   1  ) month="Jan"  ;;
   2  ) month="Feb"  ;;
   3  ) month="Mar"  ;;
@@ -29,6 +29,9 @@ monthNumToName()
 # YOU WANT TO INCLUDE THIS IN OTHER SCRIPTS.
 # =================
 # Input validation
+if [ $# -eq 1 ] ; then # To compenstate for / or - formats
+  set -- $(echo $1 | sed 's/[\/\-]/ /g')
+fi
 if [ $# -ne 3 ] ; then
   echo "Usage: $0 day month year" >&2
   echo "Formats are 3 August 1997 and 3 8 1997" >&2
