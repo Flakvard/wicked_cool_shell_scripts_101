@@ -9,11 +9,11 @@ nicenumber()
 # Note that we assume that '.' is the decimal separator in the INPUT value
 # to this script. The decimal separator in the output value is '.' unless
 # specified by the user with the -d flag.
-  integer=$(echo $1 | cut -d'.' -f1) # Left of the decimal.
-  decimal=$(echo $1 | cut -d'.' -f2) # Right of the decimal.
-# Check if number has more than the integer part.
-  if [ "$decimal" != "$1" ]; then
-# There's a fractional part, so let's include it.
+  integer=$(echo $1|cut -d$DD -f1) # Left of the decimal.
+  decimal=$(echo $1|cut -d$DD -f2) # Right of the decimal.
+  # Check if number has more than the integer part.
+  if [ $decimal != $1 ] ; then
+    # There's a fractional part, so let's include it.
     result="${DD:= '.'}$decimal"
   fi
 
@@ -27,7 +27,7 @@ nicenumber()
       remainder="0$remainder"
     done
 
-    result="${TD:)","}${remainder}${result}" # Builds right to left
+    result="${TD:="."}${remainder}${result}" # Builds right to left
     thousands=$(($thousands / 1000)) # To left of remainder, if any
   done
 
@@ -37,8 +37,8 @@ nicenumber()
   fi
 }
 
-DD="." # Decimal point delimiter, to separate whole and fractions values
-TD="," #Thousands delimiter, to separate every three digits
+DD="," # Decimal point delimiter, to separate whole and fractions values
+TD="." #Thousands delimiter, to separate every three digits
 
 # BEGIN MAIN SCRIPT
 # =================
