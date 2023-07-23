@@ -22,4 +22,35 @@ validfloat()
 
     # Extract the part before the decimal point.
     decimalPart=$(echo $fvalue | cut -d. -f1)
+
+    # Extract the digits after the decimal point.
+    fractionalPart=${fvalue#\.}
+
+    # Start by testing the decimal part, which is everything
+    # to the left of the decimal point.
+    
+    if [ ! -z $decimalPart ] ; then
+      # "!" reverses test logic, so the following is
+      # if NOT a valid integer
+      if ! validint $decimalPart "" "" ; then
+        return 1
+      fi
+    fi
+
+    # Now let's test the fractional value.
+    #
+    # To start, you can't have a negative sign after the decimal point
+    #  like 33.-11 so let's test for '-' sign in the decimal.
+    if [ ${fractionalPart%${fractionalPart#?}} = "-" ] ; then
+      echo "Invalid floating-point number: '-' not allowed \
+        after decimal point." >&2
+      return 1
+    fi
+
+    # Now let's test the fractional value.
+
+    # To start, you can't have a negative sign after the decimal point
+    # like 33.-11, so let's test for the '-' sign in the decimal.
+    if [ ${fractionalPart} ]
+
 }
