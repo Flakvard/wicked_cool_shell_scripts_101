@@ -18,13 +18,13 @@ validfloat()
   fvalue=$1
 
   # Check whether the input number has a decimal point.
-  if [ ! -z $(echo $fvalue | sed 's/[^.]//g') ] ; then
+  if [ ! -z $(echo $fvalue|sed 's/[^,]//g') ] ; then
 
     # Extract the part before the decimal point.
-    decimalPart=$(echo $fvalue | cut -d. -f1)
+    decimalPart=$(echo $fvalue | cut -d, -f1)
 
     # Extract the digits after the decimal point.
-    fractionalPart=${fvalue#\.}
+    fractionalPart=${fvalue#*\,}
 
     # Start by testing the decimal part, which is everything
     # to the left of the decimal point.
@@ -46,11 +46,32 @@ validfloat()
         after decimal point." >&2
       return 1
     fi
+    if [ $fractionalPart != "" ] ; then
+      # If the fractional part is NOT a valid integer...
+      if ! validint $fractionalPart "0" "" ; then
+        return 1
+      fi
+    fi
 
-    # Now let's test the fractional value.
+  else
+    # if the entire value is just "-", that's not good either.
+    if [ $fvalue = "-" ] ; then
+      echo "Invalid floating-point format." >&2
+        return 1
+    fi
 
-    # To start, you can't have a negative sign after the decimal point
-    # like 33.-11, so let's test for the '-' sign in the decimal.
-    if [ ${fractionalPart} ]
+    # Finally, check that the remaining digits are actually
+    # valid as integers.
+    if ! validint $fvalue "" "" ; then
+      return 1
+    fi
+fi
 
+return 0
 }
+
+if validfloat $1 ; then
+  echo "$1 is a valid floating-point value."
+fi
+
+exit 0
