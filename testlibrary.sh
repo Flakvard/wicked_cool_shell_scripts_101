@@ -1,7 +1,7 @@
 #!/bin/bash
 # Library test script
 # Start by sourcing (reading in) the library.sh file.
-. library.sh
+. ./library.sh
 initializeANSI
 # Let's set up all those ANSI escape sequences.
 echon "First off, do you have echo in your path? (1=yes, 2=no) "
@@ -21,8 +21,7 @@ echo ""
 echon "Enter a year you think might be a leap year: "
 read year
 # Test to see if the year specified is between 1 and 9999 by
-#
-using validint with a min and max value.
+# using validint with a min and max value.
 while ! validint $year 1 9999 ; do
 echon "Please enter a year in the ${boldon}correct${boldoff} format: "
 read year
