@@ -56,7 +56,48 @@ if [ $matches -gt 1 ] ; then
     echo "$0: Restore canceled by user: invalid input." >&2
     exit 1
   fi
+
   if [ ${desired:=1} -ge $index ] ; then
     echo "$0: Restore canceled by user: index value too big." >&2
     exit 1
   fi
+
+  if [ $desired -lt 1 ] ; then
+    echo "$0: Restore canceled by user." >&2
+    exit 1
+  fi
+
+  restore="$(ls -td1 *"$1" | sed -n "${desired}p")"
+
+  if [ -e "$dest/$1" ] ; then
+    echo "\"$1\" already exists in this directory. Cannot overwrite." >&2
+    exit 1
+  fi
+
+  /bin/echo -n "Restoring file \"$1\" ..."
+  $move "$restore" "$dest/$1"
+  echo "done."
+
+  /bin/echo -n "Delete the additional copies of this file? [y] "
+  read answer
+
+  if [ ${answer:=y} = "y" ] ; then
+    $realrm -rf *"$1"
+    echo "Deleted."
+  else
+    echo "Additional copies retained."
+  fi
+else
+  if [ -e "$dest/$1" ] ; then
+    echo "\"$1\" already exists in this directory. Cannot overwrite." >&2
+    exit 1
+  fi
+
+  restore="$(ls -d *"$1")"
+
+  /bin/echo -n "Restoring file \"$1\" ... "
+  $move "$restore" "$dest/$1"
+  echo "Done."
+
+fi
+exit 0
