@@ -1,0 +1,16 @@
+#!/bin/bash
+# unrm--Searches the deleted files archive for the specified file or
+# directory. If there is more than one matching result, it shows a list
+# of results ordered by timestamp and lets the user specify which one
+# to restore.
+
+archivedir="$HOME/.deleted-files"
+realrm="$(which rm)"
+move="$(which mv)"
+
+dest=$(pwd)
+
+if [ ! -d $archivedir ] ; then
+  echo "$0: No deleted files directory: nothing to unrm" >&2
+  exit 1
+fi
