@@ -17,10 +17,11 @@ fi
 
 cd $archivedir
 # If given no arguments, just show a listing of the deleted files.
- if [ $# -eq 0 ] ; then
+if [ $# -eq 0 ] ; then
 echo "Contents of your deleted files archive (sorted by date):"
-
-ls -FC | sed -e 's/\([[:digit:]][[:digit:]]\.\)\{5\}//g' \
+
+# removes yy:mm:dd:HH:MM:SS from file name
+ls -FC | sed -e 's/\([[:digit:]][[:digit:]]\.\)\{6\}//g' \
 -e 's/^/ /'
 exit 0
 fi
@@ -50,7 +51,7 @@ if [ $matches -gt 1 ] ; then
     index=$(( $index + 1))
   done
   echo ""
-  /bin/echo -n "Which version of $1 should I restore ('0' to quit)? [1] : "
+  echo -n "Which version of $1 should I restore ('0' to quit)? [1] : "
   read desired
   if [ ! -z "$(echo $desired | sed 's/[[:digit:]]//g')" ] ; then
     echo "$0: Restore canceled by user: invalid input." >&2
