@@ -1,5 +1,10 @@
 #!/bin/bash
 # logrm--Logs all file deletion requests unless the -s flag is used
+# problem with There’s a potential log file ownership permission problem here. Either the 
+# remove.log file is writable by all, in which case a user could clear its contents 
+# out with a command like cat /dev/null > /var/log/remove.log, or it isn’t writable by all,
+# in which case the script can’t log the events
+
 removelog="/var/log/remove.log"
 if [ $# -eq 0 ] ; then
     echo "Usage: $0 [-s] list of files or directories" >&2
